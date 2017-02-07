@@ -1,0 +1,57 @@
+@media screen
+        and (min-width: 1200px)
+        and (max-width: 1400px) {
+                .ralphy {
+                        width: 250px;
+                        height: 187px;
+                        background-image:url("ralphy.gif") 250 0px;
+                }
+}
+
+@media screen
+        and (min-width: 1400px) {
+                .ralphy {
+                        width: 250px;
+                        height: 187px;
+                        background-image:url("ralphy.gif") 0 0px;
+                }
+}
+
+@media screen
+        and (min-width: 1000px)
+        and (max-width: 1200px) {
+                .ralphy {
+                        width: 250px;
+                        height: 187px;
+                        background-image:url("ralphy.gif") 0 -187px;
+                }
+}
+
+@media screen
+        and (min-width: 800px)
+        and (max-width: 1000px) {
+                .ralphy {
+                        width: 250px;
+                        height: 187px;
+                        background-image:url("ralphy.gif") 250 -187px;
+                }
+}
+
+@media screen
+        and (min-width: 600px)
+        and (max-width: 800px) {
+                .ralphy {
+                        width: 250px;
+                        height: 187px;
+                        background-image:url("ralphy.gif") 0 -373px;
+                }
+}
+
+@media screen
+        and (max-width: 600px) {
+                .ralphy {
+                        width: 250px;
+                        height: 187px;
+                        background-image:url("ralphy.gif") 250 -373px;
+                }
+}
