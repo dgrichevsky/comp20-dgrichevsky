@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Fail</title>
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+<h1 id="title">Fail</h1>
+
+<video src="https://www.cs.tufts.edu/comp/20/fail.mp4" id="failvideo" controls ></video>
+<div id="lyrics">
+</br/>
+</div>
+
+<script>
+
+        var vid = document.getElementById("failvideo");
+        vid.addEventListener("play", ontimeupdate, true);
+
+        var lyrics = document.getElementById("lyrics");
+
+
+        vid.ontimeupdate = function() {
+         var line1 = "You've got me feelin' emotions";
+         var line2 = "Deeper than I've ever dreamed of";
+         var line4 = "Higher than the heavens above";
+
+         var line5 = "I feel good, I feel nice";
+         var line6 = "I've never felt so satisfied";
+         var line7 = "I'm in love, I'm alive";
+         var line8 = "Intoxicated, flyin' high";
+
+         var line9 = "Feels like a dream";
+         var line10 = "When you touch me tenderly";
+         var line11 = "I don't know if it's real";
+         var line12 = "But I like the way I feel inside";
+
+        if(Math.floor(vid.currentTime) === 9 || Math.floor(vid.currentTime) === 17 || Math.floor(vid.currentTime) === 59 || Math.floor(vid.currentTime) === 67) {
+                lyrics.innerHTML = line1;
+        } else if(Math.floor(vid.currentTime) === 13|| Math.floor(vid.currentTime) === 63) {
+                lyrics.innerHTML = line2;
+        } else if(Math.floor(vid.currentTime) === 22 || Math.floor(vid.currentTime) === 74) {
+                lyrics.innerHTML = line4;
+        }else if(Math.floor(vid.currentTime) === 26) {
+                lyrics.innerHTML = line5;
+        } else if(Math.floor(vid.currentTime) === 28) {
+                lyrics.innerHTML = line6;
+        } else if(Math.floor(vid.currentTime) === 33) {
+                lyrics.innerHTML = line7;
+        } else if(Math.floor(vid.currentTime) === 37) {
+                lyrics.innerHTML = line8;
+        }
+        else if(Math.floor(vid.currentTime) === 44) {
+                lyrics.innerHTML = line9;
+        } else if(Math.floor(vid.currentTime) === 47) {
+                lyrics.innerHTML = line10;
+        } else if(Math.floor(vid.currentTime) === 50) {
+                lyrics.innerHTML = line11;
+        } else if(Math.floor(vid.currentTime) === 55) {
+                lyrics.innerHTML = line12;
+        }
+        };
+
+</script>
+</body>
+</html>
