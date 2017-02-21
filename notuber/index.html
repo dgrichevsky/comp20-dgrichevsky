@@ -2,36 +2,142 @@
 <!-- AIzaSyB3u8wf_dY42-8UKqzO7K-aJnof_4aXHdQ API KEY-->
 
 <html>
-  <head>
-    <title>Simple Map</title>
-    <meta name="viewport" content="initial-scale=1.0">
-    <meta charset="utf-8">
-    <style>
-      /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-      #map {
-        height: 100%;
-      }
-      /* Optional: Makes the sample page fill the window. */
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="map"></div>
-    <script>
-      var map;
-      function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: -34.397, lng: 150.644},
-          zoom: 8
-        });
-      }
-    </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB3u8wf_dY42-8UKqzO7K-aJnof_4aXHdQ&callback=initMap"
-    async defer></script>
-  </body>
+<head>
+        <title>Geolocation Map Example</title>
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=true"></script>
+        <link rel="stylesheet" href="style.css" />
+
+        <script>
+
+
+        var xhr = new XMLHttpRequest();
+        var url = "https://defense-in-derpth.herokuapp.com/submit";
+
+        var myLat = 0;
+        var myLng = 0;
+        var data;
+        var me = new google.maps.LatLng(myLat, myLng);
+        var myOptions = {
+			zoom: 13, // The larger the zoom number, the bigger the zoom
+			center: me,
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		};
+	var map;
+        var marker;
+	var infowindow = new google.maps.InfoWindow();
+
+        function init()
+        {
+                xhr.open('POST', url, true);
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+                map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+                getMyLocation();
+        }
+
+        xhr.onreadystatechange = function () {
+             if (xhr.readyState == 4 && (xhr.status == 200)) {
+                data = JSON.parse(xhr.responseText);
+                //console.log(data);
+                convertData(data);
+            }
+        }
+
+        function getMyLocation() {
+                if (navigator.geolocation) { // the navigator.geolocation object is supported on your browser
+                        navigator.geolocation.getCurrentPosition(function(position) {
+                                myLat = position.coords.latitude;
+                                myLng = position.coords.longitude;
+                                xhr.send("username=w8XMS577&lat="+myLat+"&lng="+myLng);
+                        });
+                }
+                else {
+                        alert("Geolocation is not supported by your web browser.  What a shame!");
+                }
+        }
+
+        var dataList =  [];
+        var vehicleList = [];
+        var icons = {
+                vehicle: {
+                        icon: "black_car.png"
+                },
+                passenger: {
+                        icon: "passenger.png"
+                }
+        };
+
+        function convertData(data)
+        {
+                if(data.hasOwnProperty("passengers")) {
+                for(var key in data.passengers) {
+                        var obj = data.passengers[key];
+                        dataList.push({
+                                position: new google.maps.LatLng(obj.lat, obj.lng),
+                                type: "passenger",
+                                id: obj._id,
+                                username: obj.username
+                        });
+                }
+                dataList.push({
+                        position: new google.maps.LatLng(myLat, myLng),
+                        type: "vehicle",
+                        id: undefined,
+                        username:"w8XMS577"
+                });
+        } else if(data.hasOwnProperty("vehicles")) {
+                for(var key in data.vehicles) {
+                        var obj = data.vehicles[key];
+                        dataList.push({
+                                position: new google.maps.LatLng(obj.lat, obj.lng),
+                                type: "vehicle",
+                                id: obj._id,
+                                username: obj.username
+                        });
+                }
+                dataList.push({
+                        position: new google.maps.LatLng(myLat, myLng),
+                        type: "passenger",
+                        id: undefined,
+                        username: "w8XMS577"
+                });
+        }
+                renderMap();
+        }
+
+        function addMarker(feature) {
+          var marker = new google.maps.Marker({
+            position: feature.position,
+            icon: icons[feature.type].icon,
+            map: map,
+            title: feature.username
+          });
+          marker.setMap(map);
+          google.maps.event.addListener(marker, 'click', function() {
+                    infowindow.setContent(marker.title);
+                    infowindow.open(map, marker);
+            });
+        }
+
+        function renderMap() {
+                //console.log("myLat: " + myLat + "myLng: " + myLng);
+                me = new google.maps.LatLng(myLat, myLng);
+                map.panTo(me);
+
+                for (var i = 0, feature; feature = dataList[i]; i++) {
+                  addMarker(feature);
+                }
+
+        }
+        //calculate distance
+        </script>
+</head>
+
+<body onload="init()">
+		<div id="map_canvas"></div>
+	</body>
+
+
+</body>
 </html>
