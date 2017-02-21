@@ -18,10 +18,9 @@
 <script>
 
         var vid = document.getElementById("failvideo");
-        vid.addEventListener("play", ontimeupdate, true);
-
         var lyrics = document.getElementById("lyrics");
 
+        vid.addEventListener("play", ontimeupdate, true);
 
         vid.ontimeupdate = function() {
          var line1 = "You've got me feelin' emotions";
@@ -40,7 +39,7 @@
 
         if(Math.floor(vid.currentTime) === 9 || Math.floor(vid.currentTime) === 17 || Math.floor(vid.currentTime) === 59 || Math.floor(vid.currentTime) === 67) {
                 lyrics.innerHTML = line1;
-        } else if(Math.floor(vid.currentTime) === 13|| Math.floor(vid.currentTime) === 63) {
+        } else if(Math.floor(vid.currentTime) === 13 || Math.floor(vid.currentTime) === 63) {
                 lyrics.innerHTML = line2;
         } else if(Math.floor(vid.currentTime) === 22 || Math.floor(vid.currentTime) === 74) {
                 lyrics.innerHTML = line4;
