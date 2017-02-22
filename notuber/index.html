@@ -5,7 +5,6 @@
 <head>
         <title>Notuber</title>
         <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-        <!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwudRHCAmknAqjzGOqPEDiV9XnnNwMYgQ&libraries=geometry"></script> -->
 
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCqp83CE_X0RM0mO9lkh6jnoP0VMBDyPY8&libraries=geometry"
          type="text/javascript"></script>
@@ -80,7 +79,7 @@
                                         position: new google.maps.LatLng(obj.lat, obj.lng),
                                         type: "passenger",
                                         id: obj._id,
-                                        username: obj.username,
+                                        username: "<h3>" + obj.username+"</h3>",
                                         distance: getDistance(obj.lat, obj.lng)
                                 });
                         }
@@ -88,7 +87,7 @@
                                 position: new google.maps.LatLng(myLat, myLng),
                                 type: "vehicle",
                                 id: undefined,
-                                username:"w8XMS577",
+                                username:"<h3>" +"w8XMS577"+ "<h3>",
                                 distance: getDistance(myLat, myLng)
                         });
                 } else if(data.hasOwnProperty("vehicles")) {
@@ -98,7 +97,7 @@
                                         position: new google.maps.LatLng(obj.lat, obj.lng),
                                         type: "vehicle",
                                         id: obj._id,
-                                        username: obj.username,
+                                        username: "<h3>" +obj.username+"<h3>",
                                         distance: getDistance(obj.lat, obj.lng)
                                 });
                         }
@@ -106,7 +105,7 @@
                                 position: new google.maps.LatLng(myLat, myLng),
                                 type: "passenger",
                                 id: undefined,
-                                username: "w8XMS577",
+                                username: "<h3>" +"w8XMS577"+ "<h3>",
                                 distance: getDistance(myLat, myLng)
                         });
                 }
