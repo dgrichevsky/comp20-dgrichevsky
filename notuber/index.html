@@ -5,7 +5,7 @@
 <head>
         <title>Geolocation Map Example</title>
         <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=true"></script>
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?libraries=geometry&sensor=true_or_false"></script>
         <link rel="stylesheet" href="style.css" />
 
         <script>
@@ -19,13 +19,24 @@
         var data;
         var me = new google.maps.LatLng(myLat, myLng);
         var myOptions = {
-			zoom: 13, // The larger the zoom number, the bigger the zoom
-			center: me,
-			mapTypeId: google.maps.MapTypeId.ROADMAP
-		};
-	var map;
+                zoom: 13,
+                center: me,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map;
         var marker;
-	var infowindow = new google.maps.InfoWindow();
+        var infowindow = new google.maps.InfoWindow();
+
+        var m2miles = 0.000621371192237;
+        var dataList =  [];
+        var icons = {
+                vehicle: {
+                        icon: "black_car.png"
+                },
+                passenger: {
+                        icon: "passenger.png"
+                }
+        };
 
         function init()
         {
@@ -37,11 +48,11 @@
         }
 
         xhr.onreadystatechange = function () {
-             if (xhr.readyState == 4 && (xhr.status == 200)) {
-                data = JSON.parse(xhr.responseText);
-                //console.log(data);
-                convertData(data);
-            }
+                if (xhr.readyState == 4 && (xhr.status == 200)) {
+                        data = JSON.parse(xhr.responseText);
+                        console.log(data);
+                        convertData(data);
+                }
         }
 
         function getMyLocation() {
@@ -50,6 +61,7 @@
                                 myLat = position.coords.latitude;
                                 myLng = position.coords.longitude;
                                 xhr.send("username=w8XMS577&lat="+myLat+"&lng="+myLng);
+                                me = new google.maps.LatLng(myLat, myLng);
                         });
                 }
                 else {
@@ -57,87 +69,82 @@
                 }
         }
 
-        var dataList =  [];
-        var vehicleList = [];
-        var icons = {
-                vehicle: {
-                        icon: "black_car.png"
-                },
-                passenger: {
-                        icon: "passenger.png"
-                }
-        };
-
         function convertData(data)
         {
                 if(data.hasOwnProperty("passengers")) {
-                for(var key in data.passengers) {
-                        var obj = data.passengers[key];
+                        for(var key in data.passengers) {
+                                var obj = data.passengers[key];
+                                dataList.push({
+                                        position: new google.maps.LatLng(obj.lat, obj.lng),
+                                        type: "passenger",
+                                        id: obj._id,
+                                        username: obj.username,
+                                        distance: getDistance(obj.lat, obj.lng)
+                                });
+                        }
                         dataList.push({
-                                position: new google.maps.LatLng(obj.lat, obj.lng),
-                                type: "passenger",
-                                id: obj._id,
-                                username: obj.username
-                        });
-                }
-                dataList.push({
-                        position: new google.maps.LatLng(myLat, myLng),
-                        type: "vehicle",
-                        id: undefined,
-                        username:"w8XMS577"
-                });
-        } else if(data.hasOwnProperty("vehicles")) {
-                for(var key in data.vehicles) {
-                        var obj = data.vehicles[key];
-                        dataList.push({
-                                position: new google.maps.LatLng(obj.lat, obj.lng),
+                                position: new google.maps.LatLng(myLat, myLng),
                                 type: "vehicle",
-                                id: obj._id,
-                                username: obj.username
+                                id: undefined,
+                                username:"w8XMS577",
+                                distance: getDistance(myLat, myLng)
+                        });
+                } else if(data.hasOwnProperty("vehicles")) {
+                        for(var key in data.vehicles) {
+                                var obj = data.vehicles[key];
+                                dataList.push({
+                                        position: new google.maps.LatLng(obj.lat, obj.lng),
+                                        type: "vehicle",
+                                        id: obj._id,
+                                        username: obj.username,
+                                        distance: getDistance(obj.lat, obj.lng)
+                                });
+                        }
+                        dataList.push({
+                                position: new google.maps.LatLng(myLat, myLng),
+                                type: "passenger",
+                                id: undefined,
+                                username: "w8XMS577",
+                                distance: getDistance(myLat, myLng)
                         });
                 }
-                dataList.push({
-                        position: new google.maps.LatLng(myLat, myLng),
-                        type: "passenger",
-                        id: undefined,
-                        username: "w8XMS577"
-                });
-        }
                 renderMap();
         }
 
         function addMarker(feature) {
-          var marker = new google.maps.Marker({
-            position: feature.position,
-            icon: icons[feature.type].icon,
-            map: map,
-            title: feature.username
-          });
-          marker.setMap(map);
-          google.maps.event.addListener(marker, 'click', function() {
-                    infowindow.setContent(marker.title);
-                    infowindow.open(map, marker);
-            });
+                var marker = new google.maps.Marker({
+                        position: feature.position,
+                        icon: icons[feature.type].icon,
+                        map: map,
+                        title: feature.username + " Distance: " + feature.distance
+                });
+                marker.setMap(map);
+                google.maps.event.addListener(marker, 'click', function() {
+                        infowindow.setContent(marker.title);
+                        infowindow.open(map, marker);
+                });
         }
 
+        function getDistance(lat, lng)
+        {
+                var location1 = new google.maps.LatLng(lat,lng);
+                var distance = google.maps.geometry.spherical.computeDistanceBetween(me, location1);
+                return m2miles * distance;
+        }
         function renderMap() {
-                //console.log("myLat: " + myLat + "myLng: " + myLng);
-                me = new google.maps.LatLng(myLat, myLng);
+                console.log("myLat: " + myLat + "myLng: " + myLng);
                 map.panTo(me);
 
                 for (var i = 0, feature; feature = dataList[i]; i++) {
-                  addMarker(feature);
+                        addMarker(feature);
                 }
 
         }
-        //calculate distance
         </script>
 </head>
 
 <body onload="init()">
-		<div id="map_canvas"></div>
-	</body>
-
-
+        <div id="map_canvas"></div>
+</body>
 </body>
 </html>
