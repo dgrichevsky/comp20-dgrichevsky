@@ -51,7 +51,6 @@
         xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4 && (xhr.status == 200)) {
                         data = JSON.parse(xhr.responseText);
-                        console.log(data);
                         convertData(data);
                 }
         }
@@ -135,7 +134,6 @@
         }
 
         function renderMap() {
-                console.log("myLat: " + myLat + "myLng: " + myLng);
                 map.panTo(me);
 
                 for (var i = 0, feature; feature = dataList[i]; i++) {
