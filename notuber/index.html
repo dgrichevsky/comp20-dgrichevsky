@@ -13,7 +13,7 @@
         <script>
 
         var xhr = new XMLHttpRequest();
-        var url = "https://defense-in-derpth.herokuapp.com/submit";
+        var url = "https://boiling-shore-70331.herokuapp.com/submit";
 
         var myLat = 0;
         var myLng = 0;
@@ -78,7 +78,7 @@
                                         position: new google.maps.LatLng(obj.lat, obj.lng),
                                         type: "passenger",
                                         id: obj._id,
-                                        username: "<h3>" + obj.username+"</h3>",
+                                        username: "<h3>" + obj.username + "</h3>",
                                         distance: getDistance(obj.lat, obj.lng)
                                 });
                         }
@@ -96,7 +96,7 @@
                                         position: new google.maps.LatLng(obj.lat, obj.lng),
                                         type: "vehicle",
                                         id: obj._id,
-                                        username: "<h3>" +obj.username+"<h3>",
+                                        username: "<h3>" + obj.username + "<h3>",
                                         distance: getDistance(obj.lat, obj.lng)
                                 });
                         }
@@ -104,7 +104,7 @@
                                 position: new google.maps.LatLng(myLat, myLng),
                                 type: "passenger",
                                 id: undefined,
-                                username: "<h3>" +"w8XMS577"+ "<h3>",
+                                username: "<h3>w8XMS577<h3>",
                                 distance: getDistance(myLat, myLng)
                         });
                 }
