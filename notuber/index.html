@@ -56,8 +56,14 @@
         }
 
         function getMyLocation() {
+                found = 0;
                 if (navigator.geolocation) { // the navigator.geolocation object is supported on your browser
+
+                        console.log(found);
                         navigator.geolocation.getCurrentPosition(function(position) {
+                                found = 1;
+                                console.log(found);
+
                                 myLat = position.coords.latitude;
                                 myLng = position.coords.longitude;
                                 xhr.send("username=w8XMS577&lat="+myLat+"&lng="+myLng);
@@ -67,10 +73,12 @@
                 else {
                         alert("Geolocation is not supported by your web browser.  What a shame!");
                 }
+                console.log(found);
         }
 
         function convertData(data)
         {
+                console.log(data);
                 if(data.hasOwnProperty("passengers")) {
                         for(var key in data.passengers) {
                                 var obj = data.passengers[key];
