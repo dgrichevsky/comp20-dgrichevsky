@@ -1,0 +1,48 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Assignment 4 - Daniel Grichevsky</title>
+
+</head>
+
+<body>
+<h1 align="center">Assignment 4: Security and Privacy Assessment of Client-Side and Server-Side</h1>
+<hr />
+  <h2>Introduction</h2>
+  <p>
+          The Black Car Service is a ride sharing service that allows either passengers or drivers to locate one another on Google Maps. There are two parts: the client-side and server-side aspect. The client-side handles the front end of the service, allowing for passengers to seek vehicles and drivers to seek passengers via XMLHttpRequests objects. The objects available are then displayed on the map. The server-side uses Heroku, Node.js and Express - network and web applications to handle the JSON data that is sent by the client side to determine which vehicles or passengers get displayed on the map.
+  </p>
+  <p>
+           I was hired to find and document security and privacy vulnerabilites within the applications.
+  </p>
+
+
+  <h2>Methodology</h2>
+
+  <p>
+          First, I performed attacks without reading the source code - also known as "black box" testing. This meant sending in various user input that would try to break the application.
+  </p>
+  <p>
+         Next, I looked into the source code to use it against itself to try to break it. This was done through cross site scripting for user input. This is known as "white box" testing.
+  </p>
+
+  <p>
+          Tamper data was also used to view and modify HTTP/HTTPS headers and post parameters.
+  </p>
+
+
+
+  <h2>Abstract of Findings</h2>
+  <h2>Issues Found</h2>
+  <h2>Conclusion</h2>
+  <h2>References</h2>
+
+  <p>
+          <a href="https://addons.mozilla.org/en-US/firefox/addon/tamper-data/">Tamper Data for Firefox</a>
+
+  </p>
+</body>
+</html>
