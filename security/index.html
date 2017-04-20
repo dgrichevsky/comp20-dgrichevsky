@@ -33,16 +33,98 @@
           Tamper data was also used to view and modify HTTP/HTTPS headers and post parameters.
   </p>
 
-
-
   <h2>Abstract of Findings</h2>
+<p>
+        There were three main security issues found within the application. The first was a cross site scripting vulnerability. This basically means that a malicious user can insert code onto the page of the app, causing the site to completely break. The second was having multiple check-ins for the same driver. This means that the same driver will be seen as two different drivers at different locations on the map. The third issue is setting access to who can actually access the app. If the information was sensitive, then with this current configuration anyone can acess the data.
+</p>
   <h2>Issues Found</h2>
-  <h2>Conclusion</h2>
-  <h2>References</h2>
+
+  <h3>1. Cross-site Scripting (XSS) Vulnerability</h3>
+  <p>
+          Location:  <a href= "https://boiling-shore-70331.herokuapp.com/">https://boiling-shore-70331.herokuapp.com/ </a>
+        </br>
+        </br>
+        Severity: HIGH. Everytime someone opens the main page of the app they have to disable the alert to render the page.
+        </br>
+        </br>
+        I found this by running this command to their app:
+</br>
+</br>
+        curl --data "username=&lt;script&gt;alert('hacked')&lt;/script&gt;&lat=5&lng=5" https://protected-badlands-62885.herokuapp.com/submit
+
+  </p>
+
+  <img src = "hacked.jpg">
+  <p>
+          This problem can be resolved by removing all non alphanumeric characters in the post method before inserting into the collection. This is a clear example of never trusting user input.
+  </p>
+
+  <h3>2. Multiple Check-ins and Timestamp</h3>
+
 
   <p>
-          <a href="https://addons.mozilla.org/en-US/firefox/addon/tamper-data/">Tamper Data for Firefox</a>
+          Location:  <a href= "https://protected-badlands-62885.herokuapp.com/submit">https://protected-badlands-62885.herokuapp.com/submit </a>
+        </br>
+        </br>
+        Severity: HIGH. There are two issues within their POST /submit API. The first is that multiple check-ins for the same username are allowed in the vehicles and passengers collection.
+        </br>
+        </br>
+        I found this by curling some data to their POST method and it returned the list of vehicles with two of the same usernames. It also returned vehicles that were past the 5 minute limit meaning that the vehicles that were displayed could have already stopped working and can't pick passengers up.
+  </br>
+  </br>
 
+  </p>
+
+  <img src = "POSTinvalid.JPG">
+  <p>
+          This problem can be resolved by using the $set and $upsert command when inserting into a collection. The $set operator replaces the value of a field with the specified value. The time check can be fixed by using the standard Date object to query the data base based off it.
+
+
+  </p>
+<img src = "update.JPG">
+
+<h3>3. CORS Security</h3>
+
+<p>
+        Location:  <a href= "https://protected-badlands-62885.herokuapp.com/">https://protected-badlands-62885.herokuapp.com/ </a>
+      </br>
+      </br>
+      Severity: HIGH. By default, web browsers do not allow AJAX requests to servers other than the site you're visiting. This is the same-origin policy. CORS allows who you specify to access the endpoint on your server. That being said in this application (as with any assignment 3 completed), the Access-Control-Allow-Origin is set so anyone can access the API. This means that anyone can access the GET / API with all of the passengers info based on their times and locations. Since this was used just by students, this wasn't an issue. However, this could be a problem is someone was malicious and the information stored in the API was sensitive. The malicious user could send a POST request to modify the collection data or even alter it, causing major issues for the car sharing service.
+      </br>
+      </br>
+     I found this while thinking about the security access behind the application.
+</br>
+</br>
+
+
+</p>
+
+<img src = "CORS.JPG">
+<p>
+        This problem can be resolved by setting specific access to the users that should be able to see the data.
+</p>
+
+  <h2>Conclusion</h2>
+<p>
+        Some things to look for in the future are privacy of information. Privacy is extremely important in today's world.  This means allowing access to the application to certain users. This isn't convenient as you will have to constantly add users who you want the application to be available to.
+</p>
+  <h2>References</h2>
+
+  <p> <li>
+
+                   <a href="https://addons.mozilla.org/en-US/firefox/addon/tamper-data/">Tamper Data for Firefox</a>
+
+  </li>
+
+
+<li>
+        <a href="https://mobilejazz.com/blog/which-security-risks-do-cors-imply/">Which Security Risks Do Cors Imply?</a>
+
+</li>
+<li>
+        <a href="http://stackoverflow.com/questions/4850702/is-cors-a-secure-way-to-do-cross-domain-ajax-requests">Is CORS a secure way to do cross-domain AJAX requests?
+</a>
+</li>
   </p>
 </body>
 </html>
